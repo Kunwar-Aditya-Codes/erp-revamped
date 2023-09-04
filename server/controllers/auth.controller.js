@@ -7,8 +7,16 @@ const generateToken = require('../utils/generateToken.utils');
  * @route POST /auth/sign_up
  */
 exports.createUser = async (req, res) => {
+  if (req.role !== 'admin') {
+    return res.status(401).json('Unauthorized!');
+  }
+
   const { urn, password, firstName, lastName, image, age, email, role } =
     req.body;
+
+  if (!urn || !password || !firstName || !lastName || !age || !email || !role) {
+    return res.status(400).json('Missing fields!');
+  }
 
   const foundUser = await User.findOne({ urn, email }).lean().exec();
 
@@ -39,13 +47,17 @@ exports.createUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   const { urn, password } = req.body;
 
+  if (!urn || !password) {
+    return res.status(400).json('Missing fields!');
+  }
+
   const foundUser = await User.findOne({ urn }).lean().exec();
 
   if (!foundUser) {
     return res.status(400).json('Invalid credential');
   }
 
-  const checkPassword = await bcrypt.compare(foundUser.password, password);
+  const checkPassword = await bcrypt.compare(password, foundUser.password);
 
   if (!checkPassword) {
     return res.status(400).json('Invalid credential');
