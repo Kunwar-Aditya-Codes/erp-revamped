@@ -17,6 +17,7 @@ app.use(cors());
 app.use(cookieParser());
 
 app.use('/api/erp/v1/auth', require('./routes/auth.route'));
+app.use('/api/erp/v1/course', require('./routes/course.route'));
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to Db');

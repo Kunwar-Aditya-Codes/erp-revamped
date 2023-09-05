@@ -1,6 +1,7 @@
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const generateToken = require('../utils/generateToken.utils');
+const Faculty = require('../model/Faculty');
 
 /**
  * @description Create user
@@ -18,13 +19,13 @@ exports.createUser = async (req, res) => {
     return res.status(400).json('Missing fields!');
   }
 
-  const foundUser = await User.findOne({ urn, email }).lean().exec();
+  const foundUser = await User.findOne({ $or: [{ urn }, { email }] });
 
   if (foundUser) {
     return res.status(400).json('User exists!');
   }
 
-  const user = new User({
+  const newUser = new User({
     firstName,
     lastName,
     password,
@@ -35,7 +36,17 @@ exports.createUser = async (req, res) => {
     image,
   });
 
-  await user.save();
+  await newUser.save();
+
+  if (role === 'faculty') {
+    const newFaculty = new Faculty({
+      basicDetails: newUser._id,
+      coursesTaught: req.body?.coursesTaught,
+    });
+    await newFaculty.save();
+  }
+
+  // Send invitation link on email
 
   return res.status(200).json('User created successfully!');
 };
@@ -77,6 +88,7 @@ exports.loginUser = async (req, res) => {
 
   return res.status(200).json({
     accessToken,
+    foundUser,
   });
 };
 

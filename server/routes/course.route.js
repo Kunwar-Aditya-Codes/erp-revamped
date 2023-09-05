@@ -1,10 +1,8 @@
 const router = require('express').Router();
-const { createUser, loginUser } = require('../controllers/auth.controller');
+const { createCourse } = require('../controllers/course.controller');
 const verfiyJwt = require('../middleware/verifyJwt.middleware');
 const isAdmin = require('../middleware/isAdmin.middleware');
 
-router.route('/sign_up').post(verfiyJwt, isAdmin, createUser);
-
-router.route('/sign_in').post(loginUser);
+router.route('/add').post(verfiyJwt, isAdmin, createCourse);
 
 module.exports = router;
