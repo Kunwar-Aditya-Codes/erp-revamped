@@ -2,10 +2,12 @@ const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const generateToken = require('../utils/generateToken.utils');
 const Faculty = require('../model/Faculty');
+const Student = require('../model/Student');
 
 /**
  * @description Create user
  * @route POST /auth/sign_up
+ * @access private - admin
  */
 exports.createUser = async (req, res) => {
   if (req.role !== 'admin') {
@@ -38,12 +40,25 @@ exports.createUser = async (req, res) => {
 
   await newUser.save();
 
+  let newProfile;
+
   if (role === 'faculty') {
-    const newFaculty = new Faculty({
+    newProfile = new Faculty({
       basicDetails: newUser._id,
       coursesTaught: req.body?.coursesTaught,
     });
-    await newFaculty.save();
+  } else if (role === 'student') {
+    newProfile = new Student({
+      basicDetails: newUser._id,
+      dateOfBirth: req.body?.dateOfBirth,
+      department: req.body?.department,
+      gender: req.body?.gender,
+      courseEnrolled: req.body?.courseEnrolled,
+    });
+  }
+
+  if (newProfile) {
+    await newProfile.save();
   }
 
   // Send invitation link on email
@@ -54,6 +69,7 @@ exports.createUser = async (req, res) => {
 /**
  * @description Login user
  * @route POST /auth/sign_in
+ * @access public
  */
 exports.loginUser = async (req, res) => {
   const { urn, password } = req.body;
@@ -95,11 +111,13 @@ exports.loginUser = async (req, res) => {
 /**
  * @description Refresh Token
  * @route POST /auth/refresh_token
+ * @access public
  */
 exports.refreshToken = async (req, res) => {};
 
 /**
  * @description Sign Out
  * @route POST /auth/sign_out
+ * @access public
  */
 exports.signOut = async (req, res) => {};

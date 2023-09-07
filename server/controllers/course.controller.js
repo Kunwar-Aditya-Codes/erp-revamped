@@ -5,6 +5,7 @@ const createCourseCode = require('../utils/createCourseCode.utils');
 /**
  * @description Create course
  * @route POST /course/add
+ * @access private - admin
  */
 exports.createCourse = async (req, res) => {
   const { courseTitle, courseYear, faculty } = req.body;
@@ -62,6 +63,7 @@ exports.createCourse = async (req, res) => {
 /**
  * @description Get course
  * @route GET /course/get
+ * @access public
  */
 exports.getCourse = async (req, res) => {
   const allCourses = await Course.find()
@@ -78,6 +80,7 @@ exports.getCourse = async (req, res) => {
 /**
  * @description Delete course
  * @route Delete /course/delete
+ * @access private - admin
  */
 exports.deleteCourse = async (req, res) => {
   const { courseId } = req.body;
@@ -86,7 +89,25 @@ exports.deleteCourse = async (req, res) => {
     return res.status(400).json('No id provided!');
   }
 
-  await Course.findByIdAndDelete(courseId);
+  const deletedCourse = await Course.findByIdAndDelete(courseId);
+
+  if (!deletedCourse) {
+    return res.status(404).json('Course not found!');
+  }
+
+  if (deletedCourse.faculty) {
+    const updateFaculty = await Faculty.findByIdAndUpdate(
+      deletedCourse.faculty,
+      {
+        $pull: {
+          coursesTaught: courseId,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+  }
 
   return res.status(200).json('Course deleted successfully!');
 };
