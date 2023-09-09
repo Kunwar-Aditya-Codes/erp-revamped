@@ -4,7 +4,7 @@ const {
   getAllStudents,
 } = require('../controllers/admin.controller');
 const verfiyJwt = require('../middleware/verifyJwt.middleware');
-const isAdmin = require('../middleware/isAdmin.middleware');
+const { isAdmin } = require('../middleware/isRole.middleware');
 
 router.route('/all_students').get(verfiyJwt, isAdmin, getAllStudents);
 

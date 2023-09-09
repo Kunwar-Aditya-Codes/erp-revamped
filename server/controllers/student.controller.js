@@ -20,6 +20,21 @@ exports.getStudentInfo = async (req, res) => {
   });
 };
 
+/**
+ * @description Get marks
+ * @route GET /student/marks/:studentId
+ * @access private - student
+ */
+exports.getStudentMarks = async (req, res) => {
+  const { studentId } = req.params;
 
+  const foundStudent = await Marks.findOne({
+    student: studentId,
+  });
+
+  return res.status(200).json({
+    foundStudent,
+  });
+};
 
 

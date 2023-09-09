@@ -2,10 +2,6 @@ const Faculty = require('../model/Faculty');
 const Course = require('../model/Course');
 const createCourseCode = require('../utils/createCourseCode.utils');
 
-
-
-
-
 /**
  * @description Create course
  * @route POST /course/add

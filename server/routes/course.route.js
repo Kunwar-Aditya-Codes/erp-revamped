@@ -5,7 +5,7 @@ const {
   deleteCourse,
 } = require('../controllers/course.controller');
 const verfiyJwt = require('../middleware/verifyJwt.middleware');
-const isAdmin = require('../middleware/isAdmin.middleware');
+const { isAdmin } = require('../middleware/isRole.middleware');
 
 router.route('/add').post(verfiyJwt, isAdmin, createCourse);
 router.route('/get').get(verfiyJwt, getCourse);
