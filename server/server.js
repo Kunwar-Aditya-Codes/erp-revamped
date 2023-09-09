@@ -19,6 +19,8 @@ app.use(cookieParser());
 app.use('/api/erp/v1/auth', require('./routes/auth.route'));
 app.use('/api/erp/v1/course', require('./routes/course.route'));
 app.use('/api/erp/v1/faculty', require('./routes/faculty.route'));
+app.use('/api/erp/v1/student', require('./routes/student.route'));
+app.use('/api/erp/v1/admin', require('./routes/admin.route'));
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to Db');

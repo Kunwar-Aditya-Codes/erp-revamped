@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const generateToken = require('../utils/generateToken.utils');
 const Faculty = require('../model/Faculty');
 const Student = require('../model/Student');
+const Marks = require('../model/Marks');
 
 /**
  * @description Create user
@@ -59,6 +60,20 @@ exports.createUser = async (req, res) => {
 
   if (newProfile) {
     await newProfile.save();
+
+    if (role === 'student' && req.body?.courseEnrolled) {
+      const courseMarks = req.body?.courseEnrolled.map((courseId) => ({
+        course: courseId,
+        marks: 0,
+      }));
+
+      const marks = new Marks({
+        student: newProfile._id,
+        courseMarks,
+      });
+
+      await marks.save();
+    }
   }
 
   // Send invitation link on email
