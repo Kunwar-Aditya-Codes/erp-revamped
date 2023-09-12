@@ -1,8 +1,33 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 interface LoginProps {}
 
+interface LoginData {
+  urn: string;
+  password: string;
+}
+
 const Login: FC<LoginProps> = ({}) => {
+  const [loginData, setLoginData] = useState<LoginData>({
+    urn: '',
+    password: '',
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setLoginData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(loginData);
+  };
+
   return (
     <div className='flex flex-col lg:flex-row h-full '>
       <div className='bg-black/70 w-full flex items-center justify-center lg:justify-start  flex-[0.2] md:flex-[0.3] lg:flex-[0.4] bg-center bg-cover bg-no-repeat bg-blend-color bg-[url("https://images.unsplash.com/photo-1581362072978-14998d01fdaa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1884&q=80")]'>
@@ -11,13 +36,18 @@ const Login: FC<LoginProps> = ({}) => {
         </h1>
       </div>
       <div className='flex-[0.8] md:flex-[0.7] lg:flex-[0.6] w-full gap-y-8 lg:gap-y-10   flex flex-col items-center justify-center'>
-        <h2 className='text-3xl md:text-5xl text-center font-bold uppercase tracking-wider text-white/25'>
-          Welcome back!
+        <h2 className='text-3xl md:text-4xl tracking-wide text-center font-light uppercase text-white/10'>
+          <span className='text-purple-500'>you</span> are back!
         </h2>
 
-        <form className='grid grid-cols-1 gap-y-8 max-w-lg w-full p-4 px-8 md:px-0'>
+        <form
+          onSubmit={handleLogin}
+          className='grid grid-cols-1 gap-y-8 max-w-lg w-full p-4 px-8 md:px-0'
+        >
           <input
             type='text'
+            value={loginData?.urn}
+            onChange={handleInputChange}
             name='urn'
             placeholder='Enter urn'
             className='p-3 md:p-4 bg-[#1e1e1e] text-white  outline-none rounded-md shadow-md md:text-lg placeholder:text-white/25 tracking-wider'
@@ -25,15 +55,17 @@ const Login: FC<LoginProps> = ({}) => {
           <input
             type='password'
             name='password'
+            value={loginData?.password}
+            onChange={handleInputChange}
             placeholder='Enter password'
             className='p-3 md:p-4 bg-[#1e1e1e] text-white  outline-none rounded-md shadow-md md:text-lg placeholder:text-white/25 tracking-wider'
           />
 
           <button
-            disabled
+            type='submit'
             className='text-[#1e1e1e] font-medium md:text-lg hover:shadow-md tracking-widest uppercase bg-white p-3 md:p-4 rounded-md disabled:cursor-not-allowed'
           >
-            Submit
+            Login
           </button>
         </form>
       </div>
