@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginProps {}
 
@@ -13,6 +14,8 @@ const Login: FC<LoginProps> = ({}) => {
     password: '',
   });
 
+  const navigate = useNavigate();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -26,6 +29,8 @@ const Login: FC<LoginProps> = ({}) => {
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(loginData);
+
+    navigate('/dashboard');
   };
 
   return (
@@ -36,8 +41,8 @@ const Login: FC<LoginProps> = ({}) => {
         </h1>
       </div>
       <div className='flex-[0.8] md:flex-[0.7] lg:flex-[0.6] w-full gap-y-8 lg:gap-y-10   flex flex-col items-center justify-center'>
-        <h2 className='text-3xl md:text-4xl tracking-wide text-center font-light uppercase text-white/10'>
-          <span className='text-purple-500'>you</span> are back!
+        <h2 className='text-3xl md:text-4xl tracking-wide text-center font-light uppercase '>
+          <span className='text-purple-500 font-normal'>you</span> are back!
         </h2>
 
         <form
@@ -50,7 +55,7 @@ const Login: FC<LoginProps> = ({}) => {
             onChange={handleInputChange}
             name='urn'
             placeholder='Enter urn'
-            className='p-3 md:p-4 bg-[#1e1e1e] text-white  outline-none rounded-md shadow-md md:text-lg placeholder:text-white/25 tracking-wider'
+            className='p-3 md:p-4 bg-white/5   outline-none rounded-md shadow-md md:text-lg placeholder:text-white/25 tracking-wider'
           />
           <input
             type='password'
@@ -58,12 +63,12 @@ const Login: FC<LoginProps> = ({}) => {
             value={loginData?.password}
             onChange={handleInputChange}
             placeholder='Enter password'
-            className='p-3 md:p-4 bg-[#1e1e1e] text-white  outline-none rounded-md shadow-md md:text-lg placeholder:text-white/25 tracking-wider'
+            className='p-3 md:p-4 bg-white/5   outline-none rounded-md shadow-md md:text-lg placeholder:text-white/25 tracking-wider'
           />
 
           <button
             type='submit'
-            className='text-[#1e1e1e] font-medium md:text-lg hover:shadow-md tracking-widest uppercase bg-white p-3 md:p-4 rounded-md disabled:cursor-not-allowed'
+            className='text-[#1e1e1e] font-medium md:text-lg hover:shadow-md tracking-widest uppercase bg-zinc-300 p-3 md:p-4 rounded-md disabled:cursor-not-allowed'
           >
             Login
           </button>
