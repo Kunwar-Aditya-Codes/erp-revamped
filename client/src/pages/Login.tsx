@@ -41,13 +41,13 @@ const Login: FC<LoginProps> = ({}) => {
         </h1>
       </div>
       <div className='flex-[0.8] md:flex-[0.7] lg:flex-[0.6] w-full gap-y-8 lg:gap-y-10   flex flex-col items-center justify-center'>
-        <h2 className='text-3xl md:text-4xl tracking-wide text-center font-light uppercase '>
-          <span className='text-purple-500 font-normal'>you</span> are back!
+        <h2 className='text-3xl md:text-4xl tracking-wide text-center  uppercase '>
+          you are back!
         </h2>
 
         <form
           onSubmit={handleLogin}
-          className='grid grid-cols-1 gap-y-8 max-w-lg w-full p-4 px-8 md:px-0'
+          className='grid grid-cols-1 gap-y-8 max-w-[27rem] w-full p-4 px-8 md:px-0'
         >
           <input
             type='text'
@@ -55,7 +55,7 @@ const Login: FC<LoginProps> = ({}) => {
             onChange={handleInputChange}
             name='urn'
             placeholder='Enter urn'
-            className='p-3 md:p-4 bg-white/5   outline-none rounded-md shadow-md md:text-lg placeholder:text-white/25 tracking-wider'
+            className='p-3  border bg-transparent border-white/5   outline-none rounded-md  md:text-lg text-light focus:border-light placeholder:text-white/25 placeholder:font-light tracking-wider'
           />
           <input
             type='password'
@@ -63,12 +63,12 @@ const Login: FC<LoginProps> = ({}) => {
             value={loginData?.password}
             onChange={handleInputChange}
             placeholder='Enter password'
-            className='p-3 md:p-4 bg-white/5   outline-none rounded-md shadow-md md:text-lg placeholder:text-white/25 tracking-wider'
+            className='p-3  border bg-transparent border-white/5   outline-none rounded-md  md:text-lg text-light focus:border-light placeholder:text-white/25 placeholder:font-light tracking-wider'
           />
 
           <button
             type='submit'
-            className='text-[#1e1e1e] font-medium md:text-lg hover:shadow-md tracking-widest uppercase bg-zinc-300 p-3 md:p-4 rounded-md disabled:cursor-not-allowed'
+            className='text-[#ffffff] font-light md:text-lg hover:shadow-md tracking-widest uppercase bg-black p-3  rounded-md disabled:cursor-not-allowed'
           >
             Login
           </button>
