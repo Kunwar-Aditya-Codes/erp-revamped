@@ -13,7 +13,12 @@ const app = express();
 db();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:5173'],
+  })
+);
 app.use(cookieParser());
 
 app.use('/api/erp/v1/auth', require('./routes/auth.route'));

@@ -1,14 +1,13 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-interface LoginProps {}
+import { publicAxios } from '../utils/axios';
 
 interface LoginData {
   urn: string;
   password: string;
 }
 
-const Login: FC<LoginProps> = ({}) => {
+const Login: FC = ({}) => {
   const [loginData, setLoginData] = useState<LoginData>({
     urn: '',
     password: '',
@@ -26,11 +25,24 @@ const Login: FC<LoginProps> = ({}) => {
     }));
   };
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(loginData);
 
-    navigate('/dashboard');
+    if (!loginData.urn || !loginData.password) {
+      return;
+    }
+
+    try {
+      const data = await publicAxios.post('auth/sign_in', {
+        ...loginData,
+      });
+
+      // redux state add here
+
+      navigate('/dashboard');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

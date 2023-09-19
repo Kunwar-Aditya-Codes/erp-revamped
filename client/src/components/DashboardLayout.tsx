@@ -12,12 +12,12 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
   // Fetch user data
 
   return (
-    <div className='flex flex-col h-full '>
+    <div className='flex flex-col h-full pb-4 pr-2'>
       {/* Navbar */}
-      <nav className=' py-4 flex items-center  justify-end px-4 lg:px-16 relative  '>
+      <nav className=' py-4 flex items-center  justify-end px-2 relative  '>
         <div
           onClick={() => setModal(!modal)}
-          className='flex items-center space-x-4 px-4 py-[0.6rem]  bg-white/10 backdrop-blur-md shadow-md  rounded-md cursor-pointer'
+          className='flex items-center space-x-4 px-4 py-[0.6rem]  bg-white text-black backdrop-blur-md shadow-md  rounded-md cursor-pointer'
         >
           <p>Name</p>
           <img
@@ -49,10 +49,10 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
         </div>
       </nav>
 
-      <div className='flex flex-grow h-full md:p-2'>
+      <div className='flex flex-grow h-full w-full md:p-2 py-2 pr-2'>
         {/* Sidebar */}
         <aside
-          className={`md:flex-[0.3] lg:flex-[0.18] h-full w-full sm:w-[70%] bg-white/10 backdrop-blur-md md:rounded-md md:shadow-md ${
+          className={`fixed md:relative md:flex-[0.3] lg:flex-[0.18] h-full w-full sm:w-[70%] bg-white/10 backdrop-blur-md md:rounded-md md:shadow-md ${
             sidebarVisible ? 'translate-x-0' : '-translate-x-full'
           } md:translate-x-0 transition-transform duration-300 ease-in-out`}
         >
@@ -66,14 +66,18 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
           </ul>
         </aside>
         <div
-          className={`md:hidden fixed bottom-4 right-4 bg-white/10 backdrop-blur-md shadow-md rounded-full text-xl p-2 cursor-pointer  `}
+          className={`md:hidden fixed bottom-4 right-4 bg-white text-black backdrop-blur-md shadow-md rounded-full text-xl p-2 cursor-pointer  `}
           onClick={() => setSidebarVisible(!sidebarVisible)}
         >
-          {sidebarVisible ? <AiOutlineClose /> : <BiMenuAltRight />}
+          {sidebarVisible ? (
+            <AiOutlineClose className='' />
+          ) : (
+            <BiMenuAltRight className='' />
+          )}
         </div>
 
         {/* Remaining Content */}
-        <div className='md:flex-[0.7] lg:flex-[0.82]'>
+        <div className='w-full shadow-md md:flex-[0.7] lg:flex-[0.82] p-4 bg-white/10 rounded-md ml-2'>
           <Outlet />
         </div>
       </div>
