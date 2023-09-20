@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { publicAxios } from '../utils/axios';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../app/slices/authSlice';
+import toast from 'react-hot-toast';
 
 interface LoginData {
   urn: string;
@@ -31,7 +32,14 @@ const Login: FC = ({}) => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    toast.loading('Logging in...', {
+      id: 'login',
+    });
+
     if (!loginData.urn || !loginData.password) {
+      toast.error('Missing fields!', {
+        id: 'login',
+      });
       return;
     }
 
@@ -41,7 +49,11 @@ const Login: FC = ({}) => {
       });
       dispatch(setToken(res?.data?.accessToken));
       navigate('/dashboard');
+      toast.dismiss('login');
     } catch (error) {
+      toast.error('Try again!', {
+        id: 'login',
+      });
       console.log(error);
     }
   };
@@ -85,7 +97,8 @@ const Login: FC = ({}) => {
 
           <button
             type='submit'
-            className='md:text-lg hover:shadow-md tracking-widest uppercase bg-white text-black p-3  rounded-md disabled:cursor-not-allowed shadow-md outline-none active:scale-95 transition ease-out '
+            disabled={!loginData.password || !loginData.urn}
+            className='md:text-lg hover:shadow-md tracking-widest uppercase bg-white text-black p-3  rounded-md disabled:cursor-not-allowed shadow-md outline-none active:scale-95 transition ease-out  disabled:text-zinc-400 '
           >
             Login
           </button>

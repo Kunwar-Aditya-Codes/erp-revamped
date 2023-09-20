@@ -4,22 +4,23 @@ import { useSelector } from 'react-redux';
 
 interface Decoded {
   role: string;
+  urn: string;
 }
 
 const useAuth = () => {
   const token = useSelector(selectToken);
 
   let role;
+  let urn;
 
   if (token) {
     const decoded: Decoded = jwtDecode(token);
 
-    console.log(decoded);
-
     role = decoded.role;
+    urn = decoded.urn;
   }
 
-  return { role };
+  return { role, urn };
 };
 
 export default useAuth;

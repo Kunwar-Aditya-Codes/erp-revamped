@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import DashboardLayout from './components/DashboardLayout';
 import Welcome from './pages/dashboard/Welcome';
 import RequireAuth from './components/RequireAuth';
+import Faculty from './pages/private/Faculty';
 
 const router = createBrowserRouter([
   {
@@ -23,8 +24,13 @@ const router = createBrowserRouter([
             element: <DashboardLayout />,
             children: [
               {
-                path: '/dashboard',
+                index: true,
                 element: <Welcome />,
+              },
+
+              {
+                path: 'faculties',
+                element: <Faculty />,
               },
             ],
           },
