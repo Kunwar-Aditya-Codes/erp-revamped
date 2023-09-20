@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { publicAxios } from '../utils/axios';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../app/slices/authSlice';
 
 interface LoginData {
   urn: string;
@@ -14,6 +16,7 @@ const Login: FC = ({}) => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -33,12 +36,10 @@ const Login: FC = ({}) => {
     }
 
     try {
-      const data = await publicAxios.post('auth/sign_in', {
+      const res = await publicAxios.post('auth/sign_in', {
         ...loginData,
       });
-
-      // redux state add here
-
+      dispatch(setToken(res?.data?.accessToken));
       navigate('/dashboard');
     } catch (error) {
       console.log(error);

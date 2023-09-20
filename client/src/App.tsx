@@ -3,6 +3,7 @@ import RootLayout from './components/RootLayout';
 import Login from './pages/Login';
 import DashboardLayout from './components/DashboardLayout';
 import Welcome from './pages/dashboard/Welcome';
+import RequireAuth from './components/RequireAuth';
 
 const router = createBrowserRouter([
   {
@@ -15,12 +16,17 @@ const router = createBrowserRouter([
       },
 
       {
-        path: '/dashboard',
-        element: <DashboardLayout />,
+        element: <RequireAuth />,
         children: [
           {
             path: '/dashboard',
-            element: <Welcome />,
+            element: <DashboardLayout />,
+            children: [
+              {
+                path: '/dashboard',
+                element: <Welcome />,
+              },
+            ],
           },
         ],
       },

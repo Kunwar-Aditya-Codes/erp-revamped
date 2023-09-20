@@ -1,7 +1,9 @@
 import { FC, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { AiOutlineClose } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { logout } from '../app/slices/authSlice';
 
 interface DashboardLayoutProps {}
 
@@ -9,7 +11,13 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
   const [modal, setModal] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
-  // Fetch user data
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const signOut = async () => {
+    dispatch(logout());
+    navigate('/');
+  };
 
   return (
     <div className='flex flex-col h-full pb-4 pr-2'>
@@ -36,12 +44,12 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
           }`}
         >
           <ul className='grid grid-cols-1 text-white divide-y divide-white/50  '>
-            <Link
-              to='/'
-              className=' transition ease-out rounded-t-md hover:bg-white hover:text-black cursor-pointer p-3'
+            <button
+              onClick={signOut}
+              className=' transition text-start ease-out rounded-t-md hover:bg-white hover:text-black cursor-pointer p-3'
             >
               Sign Out
-            </Link>
+            </button>
             <li className='hover:bg-mid transition ease-out hover:bg-white hover:text-black cursor-pointer p-3'>
               View Profile
             </li>
