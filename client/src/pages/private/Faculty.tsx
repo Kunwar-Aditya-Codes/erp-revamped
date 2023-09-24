@@ -9,11 +9,7 @@ interface FacultyProps {}
 const Faculty: FC<FacultyProps> = ({}) => {
   const axiosPrivate = usePrivateAxios();
 
-  const {
-    data: allFaculty,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['faculties'],
     queryFn: async () => {
       const response = await axiosPrivate.get('admin/all_faculty');
@@ -22,7 +18,11 @@ const Faculty: FC<FacultyProps> = ({}) => {
     staleTime: Infinity,
   });
 
-  return <div>{isLoading ? <BiLoaderCircle /> : <TableList />}</div>;
+  return (
+    <div className=''>
+      {isLoading ? <p>Loading...</p> : <TableList data={data?.allFaculty} />}
+    </div>
+  );
 };
 
 export default Faculty;

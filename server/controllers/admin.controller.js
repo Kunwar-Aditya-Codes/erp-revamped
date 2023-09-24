@@ -18,6 +18,8 @@ exports.getAllStudents = async (req, res) => {
  * @access private - admin
  */
 exports.getAllFaculty = async (req, res) => {
-  const allFaculty = await User.find({ role: 'faculty' }).lean();
+  const allFaculty = await User.find({ role: 'faculty' })
+    .select('-password')
+    .lean();
   return res.status(200).json({ allFaculty });
 };

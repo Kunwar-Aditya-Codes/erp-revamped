@@ -8,9 +8,18 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-interface TableListProps {}
+interface TableListProps {
+  data: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    age: number;
+    email: string;
+    urn: string;
+  }[];
+}
 
-const TableList: FC<TableListProps> = ({}) => {
+const TableList: FC<TableListProps> = ({ data }) => {
   const invoices = [
     {
       invoice: 'INV001',
