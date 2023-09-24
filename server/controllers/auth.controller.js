@@ -4,6 +4,7 @@ const generateToken = require('../utils/generateToken.utils');
 const Faculty = require('../model/Faculty');
 const Student = require('../model/Student');
 const Marks = require('../model/Marks');
+const jwt = require('jsonwebtoken');
 
 /**
  * @description Create user
@@ -128,7 +129,37 @@ exports.loginUser = async (req, res) => {
  * @route POST /auth/refresh_token
  * @access public
  */
-exports.refreshToken = async (req, res) => {};
+exports.refreshToken = async (req, res) => {
+  const { refreshToken } = req.cookies;
+
+  if (!refreshToken) {
+    return res.status(401).json('Please login!');
+  }
+
+  const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
+
+  const { role, urn } = decoded;
+
+  const findUser = await User.findOne({ urn, role });
+
+  if (!findUser) {
+    return res.status(401).json('No user!');
+  }
+
+  const { accessToken, refreshToken: newRefreshToken } = await generateToken(
+    urn,
+    role
+  );
+
+  res.cookie('refreshToken', newRefreshToken, {
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  return res.status(200).json({ accessToken });
+};
 
 /**
  * @description Sign Out

@@ -63,8 +63,8 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
       <div className='flex flex-grow h-full w-full md:p-2 py-2 pr-2'>
         {/* Sidebar */}
         <aside
-          className={`fixed top-0 md:relative md:flex-[0.3] lg:flex-[0.18] h-full w-full sm:w-[70%] bg-white/10 backdrop-blur-lg md:rounded-md md:shadow-md ${
-            sidebarVisible ? 'translate-x-0' : '-translate-x-full'
+          className={`fixed top-0 md:relative md:flex-[0.3] lg:flex-[0.18] backdrop-blur-md z-10 h-full w-full sm:w-[70%] bg-white/10  md:rounded-md md:shadow-md ${
+            sidebarVisible ? 'translate-x-0 ' : '-translate-x-full'
           } md:translate-x-0 transition-transform duration-300 ease-in-out`}
         >
           <ul className='gap-y-10 px-2 w-full grid grid-cols-1 justify-items-center py-4  uppercase  text-lg tracking-widest pt-8'>
@@ -72,7 +72,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
               <>
                 <Link
                   to='/dashboard/faculties'
-                  className='hover:bg-white rounded-md hover:text-black transition ease-out  w-full text-center py-3 cursor-pointer'
+                  className='hover:bg-white rounded-md  hover:text-black transition ease-out  w-full text-center py-3 cursor-pointer'
                 >
                   Faculty
                 </Link>
