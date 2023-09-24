@@ -76,9 +76,12 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
                 >
                   Faculty
                 </Link>
-                <li className='hover:bg-white rounded-md hover:text-black transition ease-out w-full text-center py-3 cursor-pointer'>
+                <Link
+                  to='/dashboard/students'
+                  className='hover:bg-white rounded-md hover:text-black transition ease-out w-full text-center py-3 cursor-pointer'
+                >
                   Students
-                </li>
+                </Link>
                 <li className='hover:bg-white rounded-md hover:text-black transition ease-out w-full text-center py-3 cursor-pointer'>
                   Add member
                 </li>
@@ -90,7 +93,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
           </ul>
         </aside>
         <div
-          className={`md:hidden fixed bottom-4 right-4 bg-white text-black backdrop-blur-md shadow-md rounded-full text-xl p-2 cursor-pointer  `}
+          className={`md:hidden fixed bottom-4 right-4 z-30 bg-white text-black backdrop-blur-md shadow-md rounded-full text-xl p-2 cursor-pointer  `}
           onClick={() => setSidebarVisible(!sidebarVisible)}
         >
           {sidebarVisible ? (

@@ -6,6 +6,7 @@ import Welcome from './pages/dashboard/Welcome';
 import RequireAuth from './components/RequireAuth';
 import Faculty from './pages/private/Faculty';
 import Persist from './components/Persist';
+import Student from './pages/private/Student';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
                   {
                     path: 'faculties',
                     element: <Faculty />,
+                  },
+
+                  {
+                    path: 'students',
+                    element: <Student />,
                   },
                 ],
               },
