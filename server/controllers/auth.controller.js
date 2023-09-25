@@ -166,4 +166,25 @@ exports.refreshToken = async (req, res) => {
  * @route POST /auth/sign_out
  * @access public
  */
-exports.signOut = async (req, res) => {};
+exports.signOut = async (req, res) => {
+  
+};
+
+/**
+ * @description Signed In Profile
+ * @route GET /auth/profile
+ * @access private
+ */
+exports.getProfile = async (req, res) => {
+  const { role, urn } = req;
+
+  if (!role || !urn) {
+    return res.status(401).json('Unauthorized!');
+  }
+
+  const foundUser = await User.findOne({ urn, urn }).select('-password').lean();
+
+  if (!foundUser) return res.status(401).json('No user!');
+
+  return res.status(200).json({ foundUser });
+};

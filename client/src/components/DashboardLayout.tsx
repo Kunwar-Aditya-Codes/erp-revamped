@@ -5,6 +5,8 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { logout } from '../app/slices/authSlice';
 import useAuth from '../hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
+import usePrivateAxios from '@/hooks/usePrivateAxios';
 
 interface DashboardLayoutProps {}
 
@@ -16,6 +18,35 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const axiosPrivate = usePrivateAxios();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => {
+      const resposne = await axiosPrivate.get('auth/profile');
+      return resposne.data;
+    },
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  });
+
+  const roleToSidebarLinks = {
+    admin: [
+      { to: '/dashboard/faculties', text: 'Faculty' },
+      { to: '/dashboard/students', text: 'Students' },
+      { to: '', text: 'Add member' },
+      { to: '', text: 'Add Course' },
+    ],
+    faculty: [
+      { to: '/dashboard/students', text: 'Students' },
+      { to: '', text: 'Marks' },
+    ],
+    student: [
+      { to: '', text: 'View Marks' },
+      { to: '', text: 'View Course' },
+    ],
+  };
 
   const signOut = async () => {
     dispatch(logout());
@@ -30,7 +61,13 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
           onClick={() => setModal(!modal)}
           className='flex items-center space-x-4 px-4 py-[0.6rem]  bg-white text-black backdrop-blur-md shadow-md  rounded-md cursor-pointer'
         >
-          <p>Name</p>
+          {isLoading ? (
+            <p>Name</p>
+          ) : (
+            <p>
+              {data.foundUser?.firstName} {data.foundUser?.lastName}
+            </p>
+          )}
           <img
             src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
             alt='profile_img'
@@ -68,28 +105,21 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
           } md:translate-x-0 transition-transform duration-300 ease-in-out`}
         >
           <ul className='gap-y-10 px-2 w-full grid grid-cols-1 justify-items-center py-4  uppercase  text-lg tracking-widest pt-8'>
-            {role === 'admin' && (
-              <>
+            {role &&
+              (
+                roleToSidebarLinks as Record<
+                  string,
+                  { to: string; text: string }[]
+                >
+              )[role]?.map((link, index) => (
                 <Link
-                  to='/dashboard/faculties'
+                  key={index}
+                  to={link.to}
                   className='hover:bg-white rounded-md  hover:text-black transition ease-out  w-full text-center py-3 cursor-pointer'
                 >
-                  Faculty
+                  {link.text}
                 </Link>
-                <Link
-                  to='/dashboard/students'
-                  className='hover:bg-white rounded-md hover:text-black transition ease-out w-full text-center py-3 cursor-pointer'
-                >
-                  Students
-                </Link>
-                <li className='hover:bg-white rounded-md hover:text-black transition ease-out w-full text-center py-3 cursor-pointer'>
-                  Add member
-                </li>
-                <li className='hover:bg-white rounded-md hover:text-black transition ease-out w-full text-center py-3 cursor-pointer'>
-                  Add Course
-                </li>
-              </>
-            )}
+              ))}
           </ul>
         </aside>
         <div
