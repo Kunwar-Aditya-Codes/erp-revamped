@@ -4,6 +4,7 @@ import { publicAxios } from '../utils/axios';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../app/slices/authSlice';
 import toast from 'react-hot-toast';
+import useRedirect from '@/hooks/useRedirect';
 
 interface LoginData {
   urn: string;
@@ -11,6 +12,8 @@ interface LoginData {
 }
 
 const Login: FC = ({}) => {
+  useRedirect();
+
   const [loginData, setLoginData] = useState<LoginData>({
     urn: '',
     password: '',

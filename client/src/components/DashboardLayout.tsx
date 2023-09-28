@@ -7,6 +7,7 @@ import { logout } from '../app/slices/authSlice';
 import useAuth from '../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import usePrivateAxios from '@/hooks/usePrivateAxios';
+import toast from 'react-hot-toast';
 
 interface DashboardLayoutProps {}
 
@@ -35,7 +36,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
     admin: [
       { to: '/dashboard/faculties', text: 'Faculty' },
       { to: '/dashboard/students', text: 'Students' },
-      { to: '', text: 'Add member' },
+      { to: '/dashboard/add-member', text: 'Add member' },
       { to: '', text: 'Add Course' },
     ],
     faculty: [
@@ -49,8 +50,21 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({}) => {
   };
 
   const signOut = async () => {
-    dispatch(logout());
-    navigate('/');
+    toast.loading('Signing out..', {
+      id: 'sign_out',
+    });
+
+    try {
+      await axiosPrivate.post('auth/sign_out');
+      dispatch(logout());
+      navigate('/');
+      toast.dismiss('sign_out');
+    } catch (error) {
+      toast.error('Error signing out', {
+        id: 'sign_out',
+      });
+      console.error('Error signing out:', error);
+    }
   };
 
   return (

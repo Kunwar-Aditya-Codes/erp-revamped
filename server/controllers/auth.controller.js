@@ -167,7 +167,14 @@ exports.refreshToken = async (req, res) => {
  * @access public
  */
 exports.signOut = async (req, res) => {
-  
+  const refreshToken = req.cookies?.refreshToken;
+
+  if (!refreshToken) {
+    return res.sendStatus(203);
+  }
+
+  res.clearCookie('refreshToken');
+  return res.sendStatus(203);
 };
 
 /**

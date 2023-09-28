@@ -7,6 +7,7 @@ import RequireAuth from './components/RequireAuth';
 import Faculty from './pages/private/Faculty';
 import Persist from './components/Persist';
 import Student from './pages/private/Student';
+import AddMember from './pages/private/AddMember';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,11 @@ const router = createBrowserRouter([
                   {
                     path: 'students',
                     element: <Student />,
+                  },
+
+                  {
+                    path: 'add-member',
+                    element: <AddMember />,
                   },
                 ],
               },
